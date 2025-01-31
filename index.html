@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Local AI Chat</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+        }
+        .chat-container {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            width: 75%;
+        }
+        #userInput {
+            width: 75%;
+            padding: 10px;
+        }
+        #aiResponse {
+            background-color: #e0e0e0;
+            padding: 10px;
+            border-radius: 5px;
+            min-height: 50px;
+            margin-top: 10px;
+        }
+        .input-container {
+            display: flex;
+            gap: 10px;
+        }
+        .input-container input[type="text"] {
+            flex-grow: 1;
+            /* This will make the input take up all available space, pushing the button to stay on the same line */
+        }
+        .input-container button {
+            padding: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="chat-container">
+        <div class="input-container">
+            <input type="text" id="userInput" placeholder="Type your question here...">
+            <button onclick="sendQuery()">Send</button>
+        </div>
+        <div id="aiResponse">AI will respond here...</div>
+    </div>
+
+    <script>
+        function sendQuery() {
+            const input = document.getElementById('userInput').value;
+            document.getElementById('aiResponse').innerText = "Processing...";
+    
+            fetch('http://localhost:8000/generate', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({prompt: input})
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('aiResponse').innerText = data.response;
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                document.getElementById('aiResponse').innerText = "An error occurred.";
+            });
+        }
+    </script>
+</body>
+</html>
