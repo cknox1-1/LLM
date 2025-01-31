@@ -19,7 +19,7 @@ app.post('/generate', async (req, res) => {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                model: 'wizard-vicuna-uncensored',
+                model: 'dolphin-mistral',
                 prompt: prompt
             })
         });
